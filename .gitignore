@@ -1,0 +1,23 @@
+# Dependências
+**/node_modules/
+
+# Caches e arquivos gerados
+**/.expo/
+**/.expo-shared/
+.history/
+web/build/
+mobile/web-build/
+server/dist/
+**/coverage/
+*.log
+
+# Configurações locais
+.env
+.env.*
+.DS_Store
+
+# Banco local com registros de exemplo
+server/src/database/*.sqlite
+
+# Cache do ESLint
+**/.eslintcache
