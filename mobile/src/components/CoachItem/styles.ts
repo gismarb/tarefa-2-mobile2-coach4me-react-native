@@ -48,6 +48,24 @@ const styles = StyleSheet.create({
     color: '#6a6180',
   },
 
+    scheduleContainer: {
+    marginHorizontal: 24,
+    marginTop: 16,
+  },
+
+  scheduleTitle: {
+    fontFamily: 'Archivo_700Bold',
+    fontSize: 14,
+    color: '#32264d',
+  },
+
+  scheduleText: {
+    fontFamily: 'Poppins_400Regular',
+    fontSize: 14,
+    color: '#6a6180',
+    marginTop: 4,
+  },
+
   footer: {
     backgroundColor: '#fafafc',
     padding: 24,
