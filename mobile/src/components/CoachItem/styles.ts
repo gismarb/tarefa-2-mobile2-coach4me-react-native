@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     color: '#6a6180',
   },
 
-    scheduleContainer: {
+  scheduleContainer: {
     marginHorizontal: 24,
     marginTop: 16,
   },
@@ -122,6 +122,15 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
 
+  favoriteIcon: {
+    width: 24,
+    height: 25,
+  },
+
+  contactIcon: {
+    width: 20,
+    height: 21,
+  },
 
 });
 

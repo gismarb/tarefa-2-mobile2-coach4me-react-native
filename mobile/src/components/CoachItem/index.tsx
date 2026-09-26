@@ -1,7 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { View, Image, Text, Linking } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
+import { View, Image, Text, Linking, TouchableOpacity } from 'react-native';
 
 import heartOutlineIcon from "../../assets/images/icons/heart-outline.png";
 import unfavoriteIcon from "../../assets/images/icons/unfavorite.png";
@@ -122,24 +121,24 @@ const CoachItem: React.FC<CoachItemProps> = ({ coach, favorited }) => {
         </Text>
 
         <View style={styles.buttonsContainer}>
-          <RectButton
+          <TouchableOpacity
             onPress={handleToggleFavorite}
             style={[styles.favoriteButton, isFavorited ? styles.favorited : {}]}
           >
             {isFavorited ? (
-              <Image source={unfavoriteIcon} />
+              <Image source={unfavoriteIcon} style={styles.favoriteIcon} />
             ) : (
-              <Image source={heartOutlineIcon} />
+              <Image source={heartOutlineIcon} style={styles.favoriteIcon} />
             )}
-          </RectButton>
+          </TouchableOpacity>
 
-          <RectButton
+          <TouchableOpacity
             onPress={handleLinkToWhatsapp}
             style={styles.contactButton}
           >
-            <Image source={whatsappIcon} />
+            <Image source={whatsappIcon} style={styles.contactIcon} />
             <Text style={styles.contactButtonText}>Entrar em contato</Text>
-          </RectButton>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
