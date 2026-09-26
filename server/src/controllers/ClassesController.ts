@@ -22,25 +22,53 @@ export default class ClassesController {
         error: 'Missing filters to search classes'
       });
     }
-  
+
     const timeInMinutes = convertHourToMinutes(time);
 
     const classes = await db('classes')
-      .whereExists(function() {
+      .whereExists(function () {
         this.select('class_schedule.*')
           .from('class_schedule')
           .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
           .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
           .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
-          .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
+          .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes]);
       })
       .where('classes.subject', '=', subject)
       .join('coaches', 'classes.coach_id', '=', 'coaches.id')
-      .select(['classes.*', 'coaches.*']);
+      .join('class_schedule', 'classes.id', '=', 'class_schedule.class_id')
+      .select([
+        'classes.*',
+        'coaches.*',
+        'classes.id as class_id',
+        'class_schedule.week_day',
+        'class_schedule.from',
+        'class_schedule.to'
+      ])
+      .orderBy('class_schedule.week_day')
+      .orderBy('class_schedule.from');
 
-    return response.json(classes);
+    const classesWithSchedule = classes.reduce((result: any[], row) => {
+      let coachClass = result.find(item => item.class_id === row.class_id);
+
+      if (!coachClass) {
+        const { week_day, from, to, ...classData } = row;
+        coachClass = { ...classData, schedule: [] };
+        result.push(coachClass);
+      }
+
+      coachClass.schedule.push({
+        week_day: row.week_day,
+        from: row.from,
+        to: row.to
+      });
+
+      return result;
+    }, []);
+
+    return response.json(classesWithSchedule);
   }
-  
+
   async create(request: Request, response: Response) {
     const {
       name,
@@ -51,9 +79,9 @@ export default class ClassesController {
       cost,
       schedule
     } = request.body;
-  
+
     const trx = await db.transaction();
-  
+
     try {
       const insertedCoachesIds = await trx('coaches').insert({
         name,
@@ -61,17 +89,17 @@ export default class ClassesController {
         whatsapp,
         bio,
       });
-    
+
       const coach_id = insertedCoachesIds[0];
-    
+
       const insertedClassesIds = await trx('classes').insert({
         subject,
         cost,
         coach_id,
       });
-    
+
       const class_id = insertedClassesIds[0];
-    
+
       const classSchedule = schedule.map((scheduleItem: ScheduleItem) => {
         return {
           class_id,
@@ -80,15 +108,15 @@ export default class ClassesController {
           to: convertHourToMinutes(scheduleItem.to),
         };
       });
-    
+
       await trx('class_schedule').insert(classSchedule);
-    
+
       await trx.commit();
-    
+
       return response.status(201).send();
     } catch (err) {
       await trx.rollback();
-  
+
       return response.status(400).json({
         error: 'Unexpected error while creating new class'
       });
