@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, TextInput } from 'react-native';
-import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
+import { ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -63,9 +62,9 @@ function CoachList() {
       <PageHeader 
         title="Coaches disponíveis" 
         headerRight={(
-          <BorderlessButton onPress={handleToggleFiltersVisible}>
+          <TouchableOpacity onPress={handleToggleFiltersVisible}>
             <Feather name="filter" size={20} color="#fff" />
-          </BorderlessButton>
+          </TouchableOpacity>
         )}
       >
         { isFiltersVisible && (
@@ -103,9 +102,9 @@ function CoachList() {
               </View>
             </View>
 
-            <RectButton onPress={handleFiltersSubmit} style={styles.submitButton}>
+            <TouchableOpacity onPress={handleFiltersSubmit} style={styles.submitButton}>
               <Text style={styles.submitButtonText}>Filtrar</Text>
-            </RectButton>
+            </TouchableOpacity>
           </View>
         )}
       </PageHeader>
