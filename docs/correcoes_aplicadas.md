@@ -84,6 +84,18 @@ Quando a busca não encontrava coaches, a lista ficava vazia sem explicar o resu
 
 ---
 
+## Ajustes visuais finais
+
+Na execução web do aplicativo mobile, a ilustração e os ícones da tela inicial não apareciam porque suas imagens precisavam de dimensões explícitas. Os nomes longos dos coaches e o texto do botão de contato também ficavam cortados na largura de celular.
+
+- `78d1c06` — definiu a altura da ilustração da tela inicial.
+- `2660635` — definiu as dimensões dos ícones da tela inicial.
+- `17515c8` — permitiu que nomes longos ocupassem mais de uma linha no card.
+- `3c66719` — exibiu a seta e a logo do cabeçalho e habilitou o clique na seta.
+- `5fb2151` — ampliou a área dos botões do card para exibir o texto de contato completo.
+
+---
+
 ## Limitações observadas
 
 - O projeto utiliza uma versão antiga do Expo, que não foi atualizada nesta atividade. A demonstração foi validada na execução web do aplicativo mobile.
