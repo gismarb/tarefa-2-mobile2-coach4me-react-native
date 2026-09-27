@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
   profileInfo: {
     marginLeft: 16,
+    flex: 1,
   },
 
   name: {
