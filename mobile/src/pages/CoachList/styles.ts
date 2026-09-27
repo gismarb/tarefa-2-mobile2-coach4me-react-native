@@ -53,6 +53,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   
+  emptyMessage: {
+    marginTop: 56,
+    color: '#6a6180',
+    fontFamily: 'Poppins_400Regular',
+    textAlign: 'center',
+  },
+
 });
 
 export default styles;

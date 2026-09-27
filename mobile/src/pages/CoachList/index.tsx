@@ -17,6 +17,8 @@ function CoachList() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
 
+  const [hasSearched, setHasSearched] = useState(false);
+
   const [subject, setSubject] = useState('');
   const [week_day, setWeekDay] = useState('');
   const [time, setTime] = useState('');
@@ -57,6 +59,7 @@ function CoachList() {
 
     setIsFiltersVisible(false);
     setCoaches(response.data);
+    setHasSearched(true);
   }
 
   return (
@@ -118,6 +121,11 @@ function CoachList() {
           paddingBottom: 16,
         }}
       >
+        {hasSearched && coaches.length === 0 && (
+          <Text style={styles.emptyMessage}>
+            Nenhum coach encontrado para os filtros informados.
+          </Text>
+        )}
         {coaches.map((coach: Coach) => {
           return (
             <CoachItem 
