@@ -26,6 +26,17 @@ const styles = StyleSheet.create({
     maxWidth: 180,
     marginVertical: 40,
   },
+
+  backIcon: {
+    width: 18,
+    height: 32,
+  },
+
+  logo: {
+    width: 30,
+    height: 6,
+  },
+
 });
 
 export default styles;

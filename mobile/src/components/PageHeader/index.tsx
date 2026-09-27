@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Image, Text, View } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import { Image, Text, View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import backIcon from '../../assets/images/icons/back.png';
@@ -23,11 +22,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, headerRight, children })
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <BorderlessButton onPress={handleGoBack}>
-          <Image source={backIcon} resizeMode="contain" />
-        </BorderlessButton>
+        <TouchableOpacity onPress={handleGoBack}>
+          <Image source={backIcon} resizeMode="contain" style={styles.backIcon} />
+        </TouchableOpacity>
 
-        <Image source={logoImg} resizeMode="contain" />
+        <Image source={logoImg} resizeMode="contain" style={styles.logo} />
       </View>
 
       <View style={styles.header}>
