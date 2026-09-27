@@ -45,7 +45,7 @@ function Landing() {
           onPress={handleNavigateToStudyPage}
           style={[styles.button, styles.buttonPrimary]}
         >
-          <Image source={studyIcon} />
+          <Image source={studyIcon} style={styles.studyIcon} />
 
           <Text style={styles.buttonText}>Estudar</Text>
         </TouchableOpacity>
@@ -54,7 +54,7 @@ function Landing() {
           onPress={handleNavigateToGiveClassesPage} 
           style={[styles.button, styles.buttonSecondary]}
         >
-          <Image source={giveClassesIcon} />
+          <Image source={giveClassesIcon} style={styles.giveClassesIcon} />
 
           <Text style={styles.buttonText}>Dar aulas</Text>
         </TouchableOpacity>
@@ -62,7 +62,7 @@ function Landing() {
 
       <Text style={styles.totalConnections}>
         Total de {totalConnections} conexões já realizadas {' '}
-        <Image source={heartIcon} />
+        <Image source={heartIcon} style={styles.heartIcon} />
       </Text>
     </View>
   );

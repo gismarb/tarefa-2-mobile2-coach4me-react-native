@@ -64,6 +64,21 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
 
+  studyIcon: {
+    width: 40,
+    height: 40,
+  },
+
+  giveClassesIcon: {
+    width: 34,
+    height: 32,
+  },
+
+  heartIcon: {
+    width: 14,
+    height: 12,
+  },
+
 });
 
 export default styles;
