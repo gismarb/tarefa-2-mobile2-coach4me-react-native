@@ -1,68 +1,182 @@
-# Coach4me
+# Coach4Me — Horários disponíveis dos coaches
 
-### Um app completo com back-end, front-end e versão mobile, desenvolvido na Especialização em Desenvolvimento Web e Mobile do [Instituto Federal de Educação, Ciência e Tecnologia do Sudeste de Minas Gerais - Campus Rio Pomba](https://www.ifsudestemg.edu.br/riopomba).
+Projeto desenvolvido para a atividade avaliativa da disciplina **Desenvolvimento de Aplicações Móveis II**, com **React Native e Expo**. Esta entrega parte do [Coach4Me disponibilizado pelo Prof. Flávio Augusto de Freitas](https://github.com/zz4fff/react-native-coach4me).
 
-## Tecnologias envolvidas:
-- Axios
-- Expo
-- Figma
-- Imnsonia
-- Next.JS
-- Node.JS
-- React
-- React-native
-- SQLite
-- Visual Studio Code
-- Yarn
+O objetivo da atividade é mostrar, na listagem mobile de coaches, os **dias da semana e horários disponíveis de cada um logo abaixo da biografia**. Para isso, a API associa os registros de `class_schedule` às aulas retornadas na busca, e o aplicativo apresenta todos os horários correspondentes no card.
 
-## Projeto no Figma
+## Visão geral
 
-A versão do projeto Web no Figma pode ser acessado clicando [aqui](https://www.figma.com/file/d4ky2gqo1qg2VCWK8iyrya/Coach-4-Me-Web?node-id=0%3A1) e a versão Mobile pode ser acessada clicando [aqui](https://www.figma.com/file/P2oCrdJyOlt4J7zz12CktZ/Coach-4-Me-Mobile).
+O projeto-base contém uma API (`server/`), um aplicativo React Native (`mobile/`) e uma aplicação web separada (`web/`). A atividade foi implementada na **API e no aplicativo mobile**. A versão web executada pelo Expo no navegador pertence a `mobile/`; ela não é a aplicação da pasta `web/`.
 
-## Execução do projeto
+No fluxo demonstrado, o usuário pode:
 
-Tenha a certeza de ter instalado o Node.JS e o Yarn no seu computador. Para verificar, digite no terminal ```node -v``` e ```yarn -v```. Se não tiver, instale o Node.JS (recomendamos a versão 20.x.x) e o Yarn seguindo as instruções do site [Node.JS](https://nodejs.org/en/download/) e [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable).
+- abrir a listagem de coaches;
+- filtrar por matéria, dia da semana e horário;
+- consultar os horários disponíveis de cada coach encontrado;
+- marcar coaches como favoritos e consultar os cards na aba Favoritos;
+- ver uma mensagem quando a busca não encontra coaches.
 
-### Versão Back-end (Server)
+## Funcionalidade implementada para a atividade
 
-Para executar o projeto Back-end, basta abrir um novo terminal no VS Code e acessar o diretório server e digitar no terminal ```npm start```. O servidor executará em segundo plano.
+### Horários na resposta da API
 
-### Versão Web
+A consulta `GET /classes` continua recebendo os filtros `subject`, `week_day` e `time`. Além dos dados da aula e do coach, a resposta inclui `schedule`, com os horários cadastrados para a respectiva aula.
 
-Para executar o projeto Web, basta abrir um novo terminal no VS Code e acessar o diretório web e digitar no terminal ```npm start```. O app deverá executará automaticamente no navegador padrão.
+O filtro seleciona coaches disponíveis no dia e horário pesquisados; o card apresenta **todos os horários cadastrados** daquela aula. Por exemplo, uma busca por segunda-feira às `08:30` pode exibir no card horários de segunda e quarta-feira.
 
-### Versão Mobile
+### Horários no card mobile
 
-Para executar o projeto Mobile, basta abrir um novo terminal no VS Code e acessar o diretório mobile e digitar no terminal ```npm start```. O terminal responderá com um QR Code e opções para executar o app no Android ou na web. Para executar no Android, execute antes o emulador do Android Studio e depois escolha a opção `a`. Para executar na web, escolha a opção `w`. A melhor opção é instalar o [Expo](https://expo.dev/) no smartphone e executar o projeto Mobile diretamente no seu celular lendo o QR Code gerado.
+Cada card apresenta os dias da semana e os intervalos de início e fim após a biografia do coach. Os horários também ficam visíveis no card salvo em Favoritos.
 
-## Solução de problemas para versões antigas do Node.JS
+## Ajustes complementares
 
-### Versões incorretas dos pacotes usados
+Durante os testes da execução web do aplicativo mobile, foram corrigidos controles de navegação, filtros, carregamento dos favoritos, exibição dos ícones e caminho do favicon. Também foi adicionada uma mensagem para buscas sem resultados.
 
-No início dos vídeos é mostrada a versão dos pacotes que devem ser instalados. Quando os vídeos foram gravados as versões eram outras, mas pode acontecer de você estar acompanhando essas vídeo-aulas e as versões atuais dos pacotes apresentarem erros e inconsistências. Se precisar fazer downgrade do NPM digitar no terminal
+O histórico desses ajustes e os avisos que continuam presentes estão em [Correções aplicadas](docs/correcoes_aplicadas.md). O escopo foi mantido próximo da proposta original, sem migração ampla de dependências.
 
+## Estrutura do projeto
+
+```text
+tarefa-2-mobile2-coach4me-react-native/
+├── docs/
+│   ├── correcoes_aplicadas.md
+│   ├── manual_execucao.md
+│   ├── requisitos_resumidos.md
+│   └── roteiro_testes.md
+├── mobile/
+│   ├── src/
+│   │   ├── components/CoachItem/
+│   │   ├── pages/CoachList/
+│   │   ├── pages/Favorites/
+│   │   └── services/api.ts
+│   ├── app.json
+│   └── package.json
+├── server/
+│   ├── src/
+│   │   ├── controllers/ClassesController.ts
+│   │   └── database/migrations/
+│   └── package.json
+├── web/
+├── LICENSE
+└── README.md
 ```
-npm install -g npm@3.10.10
+
+## Principais arquivos
+
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `server/src/controllers/ClassesController.ts` | Consulta coaches e seus horários; cadastra aulas com múltiplos horários. |
+| `server/src/database/migrations/` | Cria as tabelas usadas pela API, inclusive `class_schedule`. |
+| `mobile/src/components/CoachItem/index.tsx` | Exibe os dados, os horários e as ações do card. |
+| `mobile/src/components/CoachItem/styles.ts` | Define o layout dos horários, botões e ícones do card. |
+| `mobile/src/pages/CoachList/index.tsx` | Filtra e lista os coaches, inclusive o estado sem resultados. |
+| `mobile/src/pages/Favorites/index.tsx` | Exibe os coaches armazenados em Favoritos. |
+| `mobile/src/services/api.ts` | Configura o endereço da API utilizado pelo aplicativo. |
+
+## Documentação
+
+- [Requisitos resumidos](docs/requisitos_resumidos.md): requisitos da atividade, funcionalidades preservadas e limites da entrega;
+- [Roteiro de testes](docs/roteiro_testes.md): entradas, procedimentos e resultados esperados;
+- [Manual de execução](docs/manual_execucao.md): instalação, migrações, cadastro de exemplo, execução e solução de problemas;
+- [Correções aplicadas](docs/correcoes_aplicadas.md): consertos realizados e respectivos commits.
+
+## Tecnologias utilizadas
+
+- React Native e Expo SDK 40 no aplicativo mobile;
+- React Navigation e AsyncStorage no aplicativo;
+- Node.js, Express, TypeScript, Knex e SQLite na API;
+- React na aplicação `web/` original;
+- npm e Git para instalação e versionamento.
+
+## Requisitos de ambiente
+
+A validação desta entrega utilizou **Node.js 20** para instalar as dependências e executar a API e **Node.js 16** para iniciar o Expo CLI antigo. É recomendável usar `nvm` para selecionar as versões sem alterar a instalação de Node de outros projetos.
+
+Para instruções completas e uma instalação sem banco de exemplo, consulte o [manual de execução](docs/manual_execucao.md). O arquivo SQLite local não é versionado; após clonar o projeto, é preciso criar as tabelas e cadastrar ao menos um coach com horários.
+
+## Instalação e execução resumidas
+
+Após clonar o repositório, mantenha **dois terminais** abertos. No primeiro, prepare e inicie a API:
+
+```bash
+cd server
+nvm use 20
+npm ci
+npm run knex:migrate
+npm start
 ```
 
-por exemplo, instalará essa versão específica. Mas só faça isso se tudo o mais não funcionar. Veja antes a versão que está instalada digitando no terminal
+No segundo, prepare e inicie o aplicativo mobile no navegador:
 
+```bash
+cd mobile
+nvm use 20
+npm ci
+nvm use 16
+npx --yes --package=expo-cli@4.13.0 expo start -c
 ```
-npm -v
-```
 
-e, caso necessário, tente fazer o downgrade.
+Quando o Expo iniciar, pressione `w` para abrir o navegador. No ambiente utilizado nos testes, o aplicativo ficou disponível em `http://localhost:19006`, com a API em `http://localhost:3333`.
 
-### O app não abre no smartphone ao ler o QR Code no Expo
+**Antes de testar em outra rede**, confira o endereço da API em `mobile/src/services/api.ts`: o IP `192.168.1.52` pertence ao ambiente de desenvolvimento usado nesta entrega. Ajuste-o para o IP do computador que executa a API; para acesso somente pelo navegador desse computador, pode ser usado `localhost`.
 
-Verifique a versão atual da SDK do Yarn e atualize-a para a versão 45.0.0 digitando no terminal ```expo upgrade``` ou para uma mais atual, caso esteja disponível.
+O cadastro de exemplo e os comandos para verificar a resposta da API estão no manual de execução.
 
-### Após atualizar a versão da SDK do Yarn podem aparecer novos erros
+## Exemplo de uso
 
-Confira o IP do server no arquivo de configuração do axios. Em seguida reinicie o server. Alguns warnings podem continuar aparecendo, mas o app deve executar normalmente.
+1. Na tela inicial, selecionar **Estudar**.
+2. Abrir o filtro e informar `Matemática`, dia `1` (segunda-feira) e `08:30`.
+3. Selecionar **Filtrar** e observar os horários abaixo da biografia dos coaches.
+4. Marcar um coach como favorito, atualizar a página e consultar a aba **Favoritos**.
 
-### Mensagens de erro do VS Code em tags de HTML
+No banco local usado durante a validação, esse filtro apresentou dois coaches. Em uma instalação nova, os resultados dependem dos registros cadastrados.
 
-Experimente desabilitar o ESLint.
+## Dados e persistência
 
+Os dados de coaches, aulas e horários ficam no SQLite da API. Os favoritos são armazenados localmente pelo aplicativo por meio do AsyncStorage.
 
+O banco de teste `server/src/database/database.sqlite` está excluído do versionamento. A migração cria as tabelas; ela não preenche registros de exemplo automaticamente.
+
+## Validação e limitações
+
+A implementação foi verificada com `npx tsc --noEmit` em `server/` e `mobile/`, consulta à API e testes manuais na execução web do aplicativo mobile. Essas pastas não possuem script `npm run build`; **não foi gerado APK** nesta entrega.
+
+O projeto-base utiliza uma versão antiga do Expo, incompatível com o Expo Go atual usado nos testes. A execução web pode exibir um aviso de compatibilidade entre dependências de navegação e `react-native-screens`, sem impedir os fluxos demonstrados. A instalação também apresenta avisos de dependências descontinuadas e vulnerabilidades, que não foram ocultados nem tratados com atualizações amplas sem análise de compatibilidade.
+
+## Referências e documentação das tecnologias
+
+### Projeto-base e materiais do professor
+
+- [Repositório original Coach4Me](https://github.com/zz4fff/react-native-coach4me), de autoria do Prof. Flávio Augusto de Freitas;
+- [Playlist de aulas do projeto](https://www.youtube.com/playlist?list=PLwPOCQ4HHXZ-u192B8cV54Al4huzVnoEE);
+- [Layout mobile no Figma](https://www.figma.com/file/P2oCrdJyOlt4J7zz12CktZ/Coach-4-Me-Mobile) e [layout web no Figma](https://www.figma.com/file/d4ky2gqo1qg2VCWK8iyrya/Coach-4-Me-Web?node-id=0%3A1), indicados no repositório original.
+
+### Aplicativo mobile
+
+- [React — fundamentos](https://react.dev/learn);
+- [React Native — documentação](https://reactnative.dev/docs/getting-started);
+- [Expo — documentação e referência do SDK](https://docs.expo.dev/);
+- [React Navigation 5.x — início](https://reactnavigation.org/docs/5.x/getting-started/);
+- [AsyncStorage — armazenamento local](https://react-native-async-storage.github.io/);
+- [Axios — requisições HTTP](https://axios-http.com/docs/intro).
+
+### API e banco de dados
+
+- [Node.js — documentação introdutória](https://nodejs.org/learn);
+- [Express 4.x — referência da API](https://expressjs.com/en/4x/api/);
+- [TypeScript — documentação](https://www.typescriptlang.org/docs/);
+- [Knex — consultas e migrações](https://knexjs.org/guide/);
+- [SQLite — documentação](https://www.sqlite.org/docs.html).
+
+### Ferramentas
+
+- [npm — documentação](https://docs.npmjs.com/);
+- [Git — documentação](https://git-scm.com/docs).
+
+O Expo, o React Native e outras bibliotecas têm documentação que acompanha as versões atuais. Como este projeto utiliza o Expo SDK 40 e React Navigation 5, confira a versão indicada antes de aplicar instruções recentes ao código-base.
+
+Esta entrega mantém a base disponibilizada pelo professor e acrescenta a funcionalidade solicitada na atividade, as correções necessárias à execução testada e a documentação correspondente. O histórico Git identifica essas alterações.
+
+## Licença
+
+O projeto contém a [licença MIT](LICENSE) do código-base, com a atribuição original preservada.
